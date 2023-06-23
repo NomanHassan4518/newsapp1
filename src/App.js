@@ -1,15 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
-import Navbar from './Components/Navbar';
-function App() {
-  return (
-  <>
-  
-  <Navbar/>
-  
-  </>
-         
-  );
-}
+import "bootstrap/dist/css/bootstrap.min.css";
+// Bootstrap Bundle JS
+import "bootstrap/dist/js/bootstrap.bundle.min";
 
-export default App;
+
+
+import React from 'react'
+import Navbar from './Components/Navbar';
+import News from './Components/News';
+
+
+export default function App () {
+    return (
+      <div>
+      <Navbar/>
+     <News pageSize={6}/>
+      </div>
+    )
+  }
+
+
+
+
+//creat spinner gif online ::    Ajaxload.info
