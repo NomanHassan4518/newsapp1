@@ -8,7 +8,7 @@ const News = (props) => {
   const [article , setArticle] = useState([]);
   const [loading , setloading] = useState(false);
   const [page , setpage] = useState(1);
-  const [totalResults , settotalResults] = useState(1);
+  const [totalResults] = useState(1);
 
 
  
@@ -19,7 +19,6 @@ const News = (props) => {
       let data = await fetch(url);
       let parsedData = await data.json();
       setloading(false);
-
       setArticle(parsedData.articles);
       setArticle(parsedData.articles);
     };
@@ -31,39 +30,29 @@ const News = (props) => {
 
  
   const handleNextClick = async () => {
-    console.log("Next");
-
-    if (!(page + 1 > Math.ceil(totalResults / props.pageSize))) {
-
-      let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=b4e92df4ad63422e820ec3184968894f&page=${
-        page + 1
-      }&pageSize=${props.pageSize}`;
-      loading({loading:true})
-      let data =  fetch(url);
-      let parsedData =  data.json();
-     loading({loading:false})
-
-     setpage(page+1)
-     setArticle(parsedData.articles)
     
+    if ((page + 1 > Math.ceil(totalResults /props.pageSize))) {
+
+      let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=b4e92df4ad63422e820ec3184968894f&page=${page + 1}&pageSize=${props.pageSize}`; 
+      setloading(true);
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      setloading(false);
+      setpage(page + 1);
+      setArticle(parsedData.articles);
+      console.log("Next");
     }
-  }
+  };
 
  const  handlePrevClick = async () => {
     console.log("Previous");
-
-    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=b4e92df4ad63422e820ec3184968894f&page=${
-      page - 1
-    }&pageSize=${props.pageSize}`;
-    loading({loading:true})
-
+    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=b4e92df4ad63422e820ec3184968894f&page=${page - 1}&pageSize=${props.pageSize}`; 
+    setloading(true);
     let data = await fetch(url);
     let parsedData = await data.json();
-    loading({loading:false})
-
-    setpage(page-1)
-    setArticle(parsedData.articles)
-
+    setloading(false);
+    setpage(page - 1);
+    setArticle(parsedData.articles);
   }
 
     return (
@@ -95,7 +84,7 @@ const News = (props) => {
         <div className="container d-flex justify-content-between">
 
 <button disabled={page<=1} className="btn btn-primary" onClick={handlePrevClick}>&larr; Previous</button>
-<button disabled={(page + 1 > Math.ceil(totalResults / props.pageSize))} className="btn btn-success" onClick={handleNextClick}>Next &rarr;</button>
+<button disabled={!(page + 1 > Math.ceil(totalResults / props.pageSize))} className="btn btn-success" onClick={handleNextClick}>Next &rarr;</button>
 
 </div>
       </div>
